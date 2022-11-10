@@ -15,7 +15,6 @@
 		503BE62B291CEE2D00E4134F /* NormalDistribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE61E291CEE2D00E4134F /* NormalDistribution.swift */; };
 		503BE62C291CEE2D00E4134F /* ContinuedFraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE620291CEE2D00E4134F /* ContinuedFraction.swift */; };
 		503BE62D291CEE2D00E4134F /* Precision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE621291CEE2D00E4134F /* Precision.swift */; };
-		503BE62E291CEE2D00E4134F /* Double+Prapiroon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE623291CEE2D00E4134F /* Double+Prapiroon.swift */; };
 		503BE62F291CEE2D00E4134F /* UnivariateSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE625291CEE2D00E4134F /* UnivariateSolver.swift */; };
 		50671A2029129EAD0021F3DD /* Prapiroon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50671A1729129EAD0021F3DD /* Prapiroon.framework */; };
 		50671A3029129F7F0021F3DD /* PrapiroonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50671A2F29129F7F0021F3DD /* PrapiroonTests.swift */; };
@@ -40,7 +39,6 @@
 		503BE61E291CEE2D00E4134F /* NormalDistribution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NormalDistribution.swift; sourceTree = "<group>"; };
 		503BE620291CEE2D00E4134F /* ContinuedFraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContinuedFraction.swift; sourceTree = "<group>"; };
 		503BE621291CEE2D00E4134F /* Precision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Precision.swift; sourceTree = "<group>"; };
-		503BE623291CEE2D00E4134F /* Double+Prapiroon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Prapiroon.swift"; sourceTree = "<group>"; };
 		503BE625291CEE2D00E4134F /* UnivariateSolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnivariateSolver.swift; sourceTree = "<group>"; };
 		50671A1729129EAD0021F3DD /* Prapiroon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Prapiroon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50671A1F29129EAD0021F3DD /* PrapiroonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrapiroonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -102,14 +100,6 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
-		503BE622291CEE2D00E4134F /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-				503BE623291CEE2D00E4134F /* Double+Prapiroon.swift */,
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		503BE624291CEE2D00E4134F /* Solvers */ = {
 			isa = PBXGroup;
 			children = (
@@ -141,7 +131,6 @@
 			children = (
 				503BE61B291CEE2D00E4134F /* Distributions */,
 				503BE619291CEE2D00E4134F /* Errors */,
-				503BE622291CEE2D00E4134F /* Extensions */,
 				503BE624291CEE2D00E4134F /* Solvers */,
 				503BE616291CEE2D00E4134F /* Specials */,
 				503BE61F291CEE2D00E4134F /* Utils */,
@@ -276,7 +265,6 @@
 				503BE62D291CEE2D00E4134F /* Precision.swift in Sources */,
 				503BE627291CEE2D00E4134F /* Erf.swift in Sources */,
 				503BE62F291CEE2D00E4134F /* UnivariateSolver.swift in Sources */,
-				503BE62E291CEE2D00E4134F /* Double+Prapiroon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
