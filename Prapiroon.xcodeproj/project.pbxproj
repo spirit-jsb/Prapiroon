@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		503BE626291CEE2D00E4134F /* Gamma.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE617291CEE2D00E4134F /* Gamma.swift */; };
+		503BE627291CEE2D00E4134F /* Erf.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE618291CEE2D00E4134F /* Erf.swift */; };
+		503BE628291CEE2D00E4134F /* PrapiroonError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE61A291CEE2D00E4134F /* PrapiroonError.swift */; };
+		503BE629291CEE2D00E4134F /* AbstractRealDistribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE61C291CEE2D00E4134F /* AbstractRealDistribution.swift */; };
+		503BE62A291CEE2D00E4134F /* RealDistribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE61D291CEE2D00E4134F /* RealDistribution.swift */; };
+		503BE62B291CEE2D00E4134F /* NormalDistribution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE61E291CEE2D00E4134F /* NormalDistribution.swift */; };
+		503BE62C291CEE2D00E4134F /* ContinuedFraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE620291CEE2D00E4134F /* ContinuedFraction.swift */; };
+		503BE62D291CEE2D00E4134F /* Precision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE621291CEE2D00E4134F /* Precision.swift */; };
+		503BE62E291CEE2D00E4134F /* Double+Prapiroon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE623291CEE2D00E4134F /* Double+Prapiroon.swift */; };
+		503BE62F291CEE2D00E4134F /* UnivariateSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE625291CEE2D00E4134F /* UnivariateSolver.swift */; };
 		50671A2029129EAD0021F3DD /* Prapiroon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50671A1729129EAD0021F3DD /* Prapiroon.framework */; };
 		50671A3029129F7F0021F3DD /* PrapiroonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50671A2F29129F7F0021F3DD /* PrapiroonTests.swift */; };
 /* End PBXBuildFile section */
@@ -22,6 +32,16 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		503BE617291CEE2D00E4134F /* Gamma.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Gamma.swift; sourceTree = "<group>"; };
+		503BE618291CEE2D00E4134F /* Erf.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Erf.swift; sourceTree = "<group>"; };
+		503BE61A291CEE2D00E4134F /* PrapiroonError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PrapiroonError.swift; sourceTree = "<group>"; };
+		503BE61C291CEE2D00E4134F /* AbstractRealDistribution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AbstractRealDistribution.swift; sourceTree = "<group>"; };
+		503BE61D291CEE2D00E4134F /* RealDistribution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RealDistribution.swift; sourceTree = "<group>"; };
+		503BE61E291CEE2D00E4134F /* NormalDistribution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NormalDistribution.swift; sourceTree = "<group>"; };
+		503BE620291CEE2D00E4134F /* ContinuedFraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContinuedFraction.swift; sourceTree = "<group>"; };
+		503BE621291CEE2D00E4134F /* Precision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Precision.swift; sourceTree = "<group>"; };
+		503BE623291CEE2D00E4134F /* Double+Prapiroon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Double+Prapiroon.swift"; sourceTree = "<group>"; };
+		503BE625291CEE2D00E4134F /* UnivariateSolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnivariateSolver.swift; sourceTree = "<group>"; };
 		50671A1729129EAD0021F3DD /* Prapiroon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Prapiroon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50671A1F29129EAD0021F3DD /* PrapiroonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrapiroonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50671A2F29129F7F0021F3DD /* PrapiroonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PrapiroonTests.swift; path = Tests/PrapiroonTests.swift; sourceTree = "<group>"; };
@@ -46,6 +66,58 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		503BE616291CEE2D00E4134F /* Specials */ = {
+			isa = PBXGroup;
+			children = (
+				503BE618291CEE2D00E4134F /* Erf.swift */,
+				503BE617291CEE2D00E4134F /* Gamma.swift */,
+			);
+			path = Specials;
+			sourceTree = "<group>";
+		};
+		503BE619291CEE2D00E4134F /* Errors */ = {
+			isa = PBXGroup;
+			children = (
+				503BE61A291CEE2D00E4134F /* PrapiroonError.swift */,
+			);
+			path = Errors;
+			sourceTree = "<group>";
+		};
+		503BE61B291CEE2D00E4134F /* Distributions */ = {
+			isa = PBXGroup;
+			children = (
+				503BE61C291CEE2D00E4134F /* AbstractRealDistribution.swift */,
+				503BE61E291CEE2D00E4134F /* NormalDistribution.swift */,
+				503BE61D291CEE2D00E4134F /* RealDistribution.swift */,
+			);
+			path = Distributions;
+			sourceTree = "<group>";
+		};
+		503BE61F291CEE2D00E4134F /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				503BE620291CEE2D00E4134F /* ContinuedFraction.swift */,
+				503BE621291CEE2D00E4134F /* Precision.swift */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		503BE622291CEE2D00E4134F /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				503BE623291CEE2D00E4134F /* Double+Prapiroon.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		503BE624291CEE2D00E4134F /* Solvers */ = {
+			isa = PBXGroup;
+			children = (
+				503BE625291CEE2D00E4134F /* UnivariateSolver.swift */,
+			);
+			path = Solvers;
+			sourceTree = "<group>";
+		};
 		50671A0D29129EAD0021F3DD = {
 			isa = PBXGroup;
 			children = (
@@ -67,6 +139,12 @@
 		50671A1929129EAD0021F3DD /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				503BE61B291CEE2D00E4134F /* Distributions */,
+				503BE619291CEE2D00E4134F /* Errors */,
+				503BE622291CEE2D00E4134F /* Extensions */,
+				503BE624291CEE2D00E4134F /* Solvers */,
+				503BE616291CEE2D00E4134F /* Specials */,
+				503BE61F291CEE2D00E4134F /* Utils */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -189,6 +267,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				503BE62C291CEE2D00E4134F /* ContinuedFraction.swift in Sources */,
+				503BE62A291CEE2D00E4134F /* RealDistribution.swift in Sources */,
+				503BE628291CEE2D00E4134F /* PrapiroonError.swift in Sources */,
+				503BE629291CEE2D00E4134F /* AbstractRealDistribution.swift in Sources */,
+				503BE626291CEE2D00E4134F /* Gamma.swift in Sources */,
+				503BE62B291CEE2D00E4134F /* NormalDistribution.swift in Sources */,
+				503BE62D291CEE2D00E4134F /* Precision.swift in Sources */,
+				503BE627291CEE2D00E4134F /* Erf.swift in Sources */,
+				503BE62F291CEE2D00E4134F /* UnivariateSolver.swift in Sources */,
+				503BE62E291CEE2D00E4134F /* Double+Prapiroon.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -408,6 +496,7 @@
 		50671A2D29129EAD0021F3DD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
@@ -434,6 +523,7 @@
 		50671A2E29129EAD0021F3DD /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
