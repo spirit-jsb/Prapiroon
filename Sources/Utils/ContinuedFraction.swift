@@ -39,11 +39,6 @@ internal struct ContinuedFraction {
   /// Maximum allowed numerical error
   private static let defaultEpsilon: Double = 10e-9
   
-  //  internal init(getA: @escaping (Int, Double) -> Double, getB: @escaping (Int, Double) -> Double) {
-  //    self.getA = getA
-  //    self.getB = getB
-  //  }
-  
   /// Evaluates the continued fraction at the value x.
   ///
   /// - Parameter x: the evaluation point.
