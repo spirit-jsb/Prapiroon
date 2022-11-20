@@ -74,10 +74,10 @@ public class NormalDistribution: AbstractRealDistribution {
   ///   - mean: Mean for this distribution.
   ///   - standardDeviation: Standard deviation for this distribution.
   ///   - inverseCumulativeAccuracy: Inverse cumulative probability accuracy.
-  /// - Throws: PrapiroonError.NotStrictlyPositive
+  /// - Throws: PrapiroonError.notStrictlyPositive
   public init(mean: Double, standardDeviation: Double, inverseCumulativeAccuracy: Double) throws {
     guard standardDeviation > 0 else {
-      throw PrapiroonError.NotStrictlyPositive.standardDeviation(standardDeviation)
+      throw PrapiroonError.notStrictlyPositive(value: NSNumber(value: standardDeviation))
     }
     
     self.mean = mean
@@ -104,7 +104,7 @@ public class NormalDistribution: AbstractRealDistribution {
   
   public override func inverseCumulativeProbability(_ p: Double) throws -> Double {
     guard p >= 0.0 && p <= 1.0 else {
-      throw PrapiroonError.outOfRange(p, lowerBound: 0.0, higherBound: 1.0)
+      throw PrapiroonError.outOfRange(wrong: NSNumber(value: p), lowerBound: NSNumber(value: 0.0), higherBound: NSNumber(value: 1.0))
     }
     
     let erfInv = try Erf.erfInv(2 * p - 1)

@@ -61,7 +61,7 @@ public class AbstractRealDistribution: RealDistribution {
   ///   supportUpperBound for p = 1
   internal func inverseCumulativeProbability(_ p: Double) throws -> Double {
     guard p >= 0.0 && p <= 1.0 else {
-      throw PrapiroonError.outOfRange(p, lowerBound: 0.0, higherBound: 1.0)
+      throw PrapiroonError.outOfRange(wrong: NSNumber(value: p), lowerBound: NSNumber(value: 0.0), higherBound: NSNumber(value: 1.0))
     }
     
     var lowerBound = self.supportLowerBound

@@ -287,7 +287,7 @@ internal struct Gamma {
       
       let continuedFraction = ContinuedFraction(getA: getA, getB: getB)
       
-      let evaluate = try continuedFraction.evaluate(x, epsilon: epsilon, maxIterations: maxIterations)
+      let evaluate = try continuedFraction.evaluate(x: x, epsilon: epsilon, maxIterations: maxIterations)
       let logGamma = try Gamma.logGamma(a)
       
       result = 1.0 / evaluate
@@ -357,11 +357,11 @@ internal struct Gamma {
   
   internal static func invGamma1pm1(_ x: Double) throws -> Double {
     guard x >= -0.5 else {
-      throw PrapiroonError.numberIsTooSmall(x, minimum: -0.5, isBoundAllowed: true)
+      throw PrapiroonError.numberIsTooSmall(wrong: NSNumber(value: x), minimum: NSNumber(value: -0.5), isBoundAllowed: true)
     }
     
     guard x <= 1.5 else {
-      throw PrapiroonError.numberIsTooLarge(x, maximum: 1.5, isBoundAllowed: true)
+      throw PrapiroonError.numberIsTooLarge(wrong: NSNumber(value: x), maximum: NSNumber(value: 1.5), isBoundAllowed: true)
     }
     
     var result: Double
@@ -445,11 +445,11 @@ internal struct Gamma {
   
   internal static func logGamma1p(_ x: Double) throws -> Double {
     guard x >= -0.5 else {
-      throw PrapiroonError.numberIsTooSmall(x, minimum: -0.5, isBoundAllowed: true)
+      throw PrapiroonError.numberIsTooSmall(wrong: NSNumber(value: x), minimum: NSNumber(value: -0.5), isBoundAllowed: true)
     }
     
     guard x <= 1.5 else {
-      throw PrapiroonError.numberIsTooLarge(x, maximum: 1.5, isBoundAllowed: true)
+      throw PrapiroonError.numberIsTooLarge(wrong: NSNumber(value: x), maximum: NSNumber(value: 1.5), isBoundAllowed: true)
     }
     
     return -log1p(try Gamma.invGamma1pm1(x))
