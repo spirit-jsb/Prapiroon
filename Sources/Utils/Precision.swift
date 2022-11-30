@@ -51,7 +51,7 @@ internal struct Precision {
     return Precision.equals(x: x, y: y, maxUlps: maxUlps) ? 0 : x < y ? -1 : 1
   }
   
-  /// Returns true iff they are equal as defined by equals(x: x, y: y, epsilon: 1).
+  /// Returns true if they are equal as defined by equals(x: x, y: y, epsilon: 1).
   ///
   /// - Parameters:
   ///   - x: first value

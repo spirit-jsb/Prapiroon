@@ -11,7 +11,7 @@ import Foundation
 
 /// This is a utility class that provides computation methods related to the Gamma family of functions.
 ///
-/// - Note: Implementation of invGamma1pm1(_ x: Double) and logGamma1p(_ x: Double) is based on the algorithms described in [Didonato and Morris (1986), Computation of the Incomplete Gamma Function Ratios and their Inverse, TOMS 12(4), 377-393](http://dx.doi.org/10.1145/22721.23109),
+/// - Note: Implementation of invGamma1pm1(x: Double) and logGamma1p(x: Double) is based on the algorithms described in [Didonato and Morris (1986), Computation of the Incomplete Gamma Function Ratios and their Inverse, TOMS 12(4), 377-393](http://dx.doi.org/10.1145/22721.23109),
 /// [Didonato and Morris (1992), Algorithm 708: Significant Digit Computation of the Incomplete Beta Function Ratios, TOMS 18(3), 360-373](http://dx.doi.org/10.1145/131766.131776)
 /// and implemented in the [NSWC Library of Mathematical Functions](http://www.dtic.mil/docs/citations/ADA476840), available [here](http://www.ualberta.ca/CNS/RESEARCH/Software/NumericalNSWC/site.html)
 ///
@@ -23,7 +23,7 @@ internal struct Gamma {
   /// [Euler-Mascheroni constant](http://en.wikipedia.org/wiki/Euler-Mascheroni_constant)
   internal static let gamma: Double = 0.577215664901532860606512090082
   
-  /// The value of the g constant in the Lanczos approximation, see lanczos(_ x: Double).
+  /// The value of the g constant in the Lanczos approximation, see lanczos(x: Double).
   internal static let lanczosG: Double = 607.0 / 128.0
   
   /// Maximum allowed numerical error
@@ -58,7 +58,7 @@ internal struct Gamma {
   /// S limit
   private static let sLimit: Double = 1e-5
   
-  // MARK: Constants for the computation of invGamma1pm1(_ x: Double)
+  // MARK: Constants for the computation of invGamma1pm1(x: Double)
   /// Copied from DGAM1 in the NSWC library.
   
   /// The constant A0 defined in DGAM1
@@ -172,17 +172,21 @@ internal struct Gamma {
   /// Avoid repeated computation of log of 2 PI in logGamma
   private static let halfLog2Pi: Double = 0.5 * log(2.0 * .pi)
   
-  internal static func logGamma(_ x: Double) throws -> Double {
+  /// Returns the value of log&nbsp;&Gamma;(x) for x > 0.
+  ///
+  /// - Parameter x: <#x description#>
+  /// - Returns: <#description#>
+  internal static func logGamma(x: Double) throws -> Double {
     var result: Double
     
     if x <= 0.0 || x.isNaN {
       result = .nan
     }
     else if x < 0.5 {
-      return try Gamma.logGamma1p(x) - log(x)
+      return try Gamma.logGamma1p(x: x) - log(x)
     }
     else if x <= 2.5 {
-      return try Gamma.logGamma1p((x - 0.5) - 0.5)
+      return try Gamma.logGamma1p(x: (x - 0.5) - 0.5)
     }
     else if x <= 8.0 {
       let n: Int = Int(floor(x - 1.5))
@@ -204,11 +208,11 @@ internal struct Gamma {
     return result
   }
   
-  internal static func regularizedGammaP(_ a: Double, x: Double) throws -> Double {
+  internal static func regularizedGammaP(a: Double, x: Double) throws -> Double {
     return try Gamma.regularizedGammaP(a, x: x, epsilon: Gamma.defaultEpsilon, maxIterations: Int.max)
   }
   
-  internal static func regularizedGammaP(_ a: Double, x: Double, epsilon: Double, maxIterations: Int) throws -> Double {
+  internal static func regularizedGammaP(a: Double, x: Double, epsilon: Double, maxIterations: Int) throws -> Double {
     var result: Double
     
     if a <= 0.0 || a.isNaN || x < 0.0 || x.isNaN {
@@ -256,11 +260,11 @@ internal struct Gamma {
     return result
   }
   
-  internal static func regularizedGammaQ(_ a: Double, x: Double) throws -> Double {
+  internal static func regularizedGammaQ(a: Double, x: Double) throws -> Double {
     return try Gamma.regularizedGammaQ(a, x: x, epsilon: Gamma.defaultEpsilon, maxIterations: Int.max)
   }
   
-  internal static func regularizedGammaQ(_ a: Double, x: Double, epsilon: Double, maxIterations: Int) throws -> Double {
+  internal static func regularizedGammaQ(a: Double, x: Double, epsilon: Double, maxIterations: Int) throws -> Double {
     var result: Double
     
     if a <= 0.0 || a.isNaN || x < 0.0 || x.isNaN {
@@ -297,7 +301,7 @@ internal struct Gamma {
     return result
   }
   
-  internal static func digamma(_ x: Double) -> Double {
+  internal static func digamma(x: Double) -> Double {
     guard !x.isNaN && !x.isInfinite else {
       return x
     }
@@ -322,7 +326,7 @@ internal struct Gamma {
     return Gamma.digamma(x + 1.0) - 1.0 / x
   }
   
-  internal static func trigamma(_ x: Double) -> Double {
+  internal static func trigamma(x: Double) -> Double {
     guard !x.isNaN && !x.isInfinite else {
       return x
     }
@@ -345,7 +349,7 @@ internal struct Gamma {
     return Gamma.trigamma(x + 1.0) + 1.0 / (x * x)
   }
   
-  internal static func lanczos(_ x: Double) -> Double {
+  internal static func lanczos(x: Double) -> Double {
     var sum: Double = 0.0
     
     (1 ..< Gamma.lanczos.count).reversed().forEach { (index) in
@@ -355,7 +359,7 @@ internal struct Gamma {
     return sum + Gamma.lanczos[0]
   }
   
-  internal static func invGamma1pm1(_ x: Double) throws -> Double {
+  internal static func invGamma1pm1(x: Double) throws -> Double {
     guard x >= -0.5 else {
       throw PrapiroonError.numberIsTooSmall(wrong: NSNumber(value: x), minimum: NSNumber(value: -0.5), isBoundAllowed: true)
     }
@@ -443,7 +447,7 @@ internal struct Gamma {
     return result
   }
   
-  internal static func logGamma1p(_ x: Double) throws -> Double {
+  internal static func logGamma1p(x: Double) throws -> Double {
     guard x >= -0.5 else {
       throw PrapiroonError.numberIsTooSmall(wrong: NSNumber(value: x), minimum: NSNumber(value: -0.5), isBoundAllowed: true)
     }
@@ -455,7 +459,7 @@ internal struct Gamma {
     return -log1p(try Gamma.invGamma1pm1(x))
   }
   
-  internal static func gamma(_ x: Double) throws -> Double {
+  internal static func gamma(x: Double) throws -> Double {
     guard x != rint(x) || x > 0.0 else {
       return Double.nan
     }

@@ -13,54 +13,97 @@ import Foundation
 /// This is a utility class that provides computation methods related to the error functions.
 internal struct Erf {
   
-  /// The number X_CRIT is used by erf(_ x1: double, x2: double) internally.
+  /// The number xCrit is used by erf(x1: double, x2: double) internally.
   /// This number solves erf(x)=0.5 within 1ulp.
-  /// More precisely, the current implementations of erf(_ x: double) and erfc(_ x: double) satisfy:
-  /// erf(X_CRIT) < 0.5,
-  /// erf(.nextUp(X_CRIT) > 0.5,
-  /// erfc(X_CRIT) = 0.5,
-  /// erfc(.nextUp(X_CRIT) < 0.5
+  /// More precisely, the current implementations of erf(x: double) and erfc(x: double) satisfy:
+  /// erf(xCrit) < 0.5,
+  /// erf(.nextUp(xCrit) > 0.5,
+  /// erfc(xCrit) = 0.5,
+  /// erfc(.nextUp(xCrit) < 0.5
   private static let xCrit: Double = 0.4769362762044697
   
-  internal static func erf(_ x: Double) throws -> Double {
+  /// Returns the error function.
+  ///
+  /// - Note: erf(x) = 2/&radic;&pi; <sub>0</sub>&int;<sup>x</sup> e<sup>-t<sup>2</sup></sup>dt
+  ///
+  /// This implementation computes erf(x) using the Gamma.regularizedGammaP(a: Double, x: Double, epsilon: Double, maxIterations: Int) regularized gamma function, following [Erf](http://mathworld.wolfram.com/Erf.html), equation (3)
+  ///
+  /// The value returned is always between -1 and 1 (inclusive).
+  /// If abs(x) > 40, then erf(x) is indistinguishable from either 1 or -1 as a double, so the appropriate extreme value is returned.
+  ///
+  /// - Parameter x: value
+  ///
+  /// - Returns: the error function erf(x)
+  ///
+  /// - Throws: PrapiroonError.maxCountExceeded if the algorithm fails to converge.
+  internal static func erf(x: Double) throws -> Double {
     if abs(x) > 40.0 {
       return x > 0.0 ? 1.0 : -1.0
     }
     
-    let result = try Gamma.regularizedGammaP(0.5, x: x * x, epsilon: 1.0e-15, maxIterations: 10000)
+    let result = try Gamma.regularizedGammaP(a: 0.5, x: x * x, epsilon: 1.0e-15, maxIterations: 10000)
     
     return x < 0.0 ? -result : result
   }
   
-  internal static func erf(_ x1: Double, x2: Double) throws -> Double {
+  /// Returns the difference between erf(x1) and erf(x2).
+  ///
+  /// - Note: The implementation uses either erf(x: Double) or erfc(x: Double)  depending on which provides the most precise result.
+  ///
+  /// - Parameters:
+  ///   - x1: first value
+  ///   - x2: second value
+  ///
+  /// - Returns: erf(x2) - erf(x1)
+  internal static func erf(x1: Double, x2: Double) throws -> Double {
     guard x1 <= x2 else {
-      return -(try Erf.erf(x2, x2: x1))
+      return -(try Erf.erf(x1: x2, x2: x1))
     }
     
     return x1 < -Erf.xCrit ?
     x2 < 0.0 ?
-    (try Erf.erfc(-x2)) - (try Erf.erfc(-x1)) :
-    (try Erf.erf(x2)) - (try Erf.erf(x1)) :
+    (try Erf.erfc(x: -x2)) - (try Erf.erfc(x: -x1)) :
+    (try Erf.erf(x: x2)) - (try Erf.erf(x: x1)) :
     x2 > Erf.xCrit && x1 > 0.0 ?
-    (try Erf.erfc(x1)) - (try Erf.erfc(x2)) :
-    (try Erf.erf(x2)) - (try Erf.erf(x1))
+    (try Erf.erfc(x: x1)) - (try Erf.erfc(x: x2)) :
+    (try Erf.erf(x: x2)) - (try Erf.erf(x: x1))
   }
   
-  internal static func erfc(_ x: Double) throws -> Double {
+  /// Returns the complementary error function.
+  ///
+  /// - Note: erfc(x) = 2/&radic;&pi; <sub>x</sub>&int;<sup>&infin;</sup> e<sup>-t<sup>2</sup></sup>dt = 1 - erf(x)
+  ///
+  /// This implementation computes erfc(x) using the Gamma.regularizedGammaQ(a: Double, x: Double, epsilon: Double, maxIterations: Int) regularized gamma function, following [Erf](http://mathworld.wolfram.com/Erf.html), equation (3).
+  ///
+  /// The value returned is always between 0 and 2 (inclusive).
+  /// If abs(x) > 40, then erf(x) is indistinguishable from either 0 or 2 as a double, so the appropriate extreme value is returned.
+  ///
+  /// - Parameter x: value
+  ///
+  /// - Returns: the complementary error function erfc(x)
+  ///
+  /// - Throws: PrapiroonError.maxCountExceeded if the algorithm fails to converge.
+  internal static func erfc(x: Double) throws -> Double {
     if abs(x) > 40.0 {
       return x > 0.0 ? 0.0 : 2.0
     }
     
-    let result = try Gamma.regularizedGammaQ(0.5, x: x * x, epsilon: 1.0e-15, maxIterations: 10000)
+    let result = try Gamma.regularizedGammaQ(a: 0.5, x: x * x, epsilon: 1.0e-15, maxIterations: 10000)
     
     return x < 0.0 ? 2.0 - result : result
   }
   
-  internal static func erfInv(_ x: Double) throws -> Double {
-    // beware that the logarithm argument must be
-    // commputed as (1.0 - x) * (1.0 + x),
-    // it must NOT be simplified as 1.0 - x * x as this
-    // would induce rounding errors near the boundaries +/-1
+  /// Returns the inverse erf.
+  ///
+  /// - Note: This implementation is described in the paper: [Approximating the erfinv function](http://people.maths.ox.ac.uk/gilesm/files/gems_erfinv.pdf) by Mike Giles, Oxford-Man Institute of Quantitative Finance, which was published in GPU Computing Gems, volume 2, 2010.
+  ///
+  /// The source code is available [here](http://gpucomputing.net/?q=node/1828)
+  ///
+  /// - Parameter x: value
+  ///
+  /// - Returns: such that x = erf(t)
+  internal static func erfInv(x: Double) throws -> Double {
+    // beware that the logarithm argument must be commputed as (1.0 - x) * (1.0 + x), it must NOT be simplified as 1.0 - x * x as this  would induce rounding errors near the boundaries +/-1
     var w: Double = -log((1.0 - x) * (1.0 + x))
     
     var p: Double
@@ -137,22 +180,23 @@ internal struct Erf {
       p = 4.8499064014085844221 + p * w
     }
     else {
-      // this branch does not appears in the original code, it
-      // was added because the previous branch does not handle
-      // x = +/-1 correctly. In this case, w is positive infinity
-      // and as the first coefficient (-2.71e-11) is negative.
-      // Once the first multiplication is done, p becomes negative
-      // infinity and remains so throughout the polynomial evaluation.
-      // So the branch above incorrectly returns negative infinity
-      // instead of the correct positive infinity.
+      // this branch does not appears in the original code, it was added because the previous branch does not handle x = +/-1 correctly.
+      // In this case, w is positive infinity and as the first coefficient (-2.71e-11) is negative.
+      // Once the first multiplication is done, p becomes negative infinity and remains so throughout the polynomial evaluation.
+      // So the branch above incorrectly returns negative infinity instead of the correct positive infinity.
       p = .infinity
     }
     
     return p * x
   }
   
-  internal static func erfcInv(_ x: Double) throws -> Double {
-    return try Erf.erfInv(1.0 - x)
+  /// Returns the inverse erfc.
+  ///
+  /// - Parameter x: value
+  ///
+  /// - Returns: such that x = erfc(t)
+  internal static func erfcInv(x: Double) throws -> Double {
+    return try Erf.erfInv(x: 1.0 - x)
   }
 }
 
