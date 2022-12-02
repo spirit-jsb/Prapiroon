@@ -24,24 +24,13 @@ internal struct UnivariateSolver {
   /// - Parameters:
   ///   - x0: lower bound for the interval.
   ///   - x1: upper bound for the interval.
-  ///   - function: function
-  /// - Returns: a value where the function is zero.
-  /// - Throws: Error
-  internal static func solve(_ x0: Double, x1: Double, function: UnivariateFunction?) throws -> Double {
-    fatalError("Not implemented yet.")
-  }
-  
-  /// Convenience method to find a zero of a univariate real function.
-  /// A default solver is used.
-  ///
-  /// - Parameters:
-  ///   - x0: lower bound for the interval.
-  ///   - x1: upper bound for the interval.
   ///   - absoluteAccuracy: accuracy to be used by the solver.
   ///   - function: function
+  ///
   /// - Returns: a value where the function is zero.
+  ///
   /// - Throws: Error
-  internal static func solve(_ x0: Double, x1: Double, absoluteAccuracy: Double, function: UnivariateFunction?) throws -> Double {
+  internal static func solve(x0: Double, x1: Double, absoluteAccuracy: Double, function: UnivariateFunction?) throws -> Double {
     fatalError("Not implemented yet.")
   }
 }

@@ -174,8 +174,17 @@ internal struct Gamma {
   
   /// Returns the value of log&nbsp;&Gamma;(x) for x > 0.
   ///
-  /// - Parameter x: <#x description#>
-  /// - Returns: <#description#>
+  /// - Note: For x &le; 8, the implementation is based on the double precision implementation in the NSWC Library of Mathematics Subroutines, DGAMLN.
+  ///
+  /// For x &gt; 8, the implementation is based on [Gamma Function](http://mathworld.wolfram.com/GammaFunction.html), equation (28).
+  ///
+  /// [Lanczos Approximation](http://mathworld.wolfram.com/LanczosApproximation.html), equations (1) through (5).
+  ///
+  /// [Paul Godfrey, A note on the computation of the convergent Lanczos complex Gamma approximation](http://my.fit.edu/~gabdo/gamma.txt)
+  ///
+  /// - Parameter x: argument
+  ///
+  /// - Returns: the value of log(Gamma(x)), Double.NaN if x <= 0.0.
   internal static func logGamma(x: Double) throws -> Double {
     var result: Double
     
@@ -196,22 +205,50 @@ internal struct Gamma {
         prod *= x - Double(i)
       }
       
-      return try Gamma.logGamma1p(x - Double(n + 1)) + log(prod)
+      return try Gamma.logGamma1p(x: x - Double(n + 1)) + log(prod)
     }
     else {
-      let sum = Gamma.lanczos(x)
+      let sum = Gamma.lanczos(x: x)
       let tmp = x + Gamma.lanczosG + 0.5
       
-      result = ((x + 0.5) * log(tmp)) - tmp + Gamma.halfLog2Pi + log(sum / x)
+      result = (x + 0.5) * log(tmp) - tmp + Gamma.halfLog2Pi + log(sum / x)
     }
     
     return result
   }
   
+  /// Returns the regularized gamma function P(a, x).
+  ///
+  /// - Parameters:
+  ///   - a: parameter
+  ///   - x: value
+  ///
+  /// - Returns: the regularized gamma function P(a, x).
+  ///
+  /// - Throw: PrapiroonError.maxCountExceeded
   internal static func regularizedGammaP(a: Double, x: Double) throws -> Double {
-    return try Gamma.regularizedGammaP(a, x: x, epsilon: Gamma.defaultEpsilon, maxIterations: Int.max)
+    return try Gamma.regularizedGammaP(a: a, x: x, epsilon: Gamma.defaultEpsilon, maxIterations: Int.max)
   }
   
+  /// Returns the regularized gamma function P(a, x).
+  ///
+  /// - Note: The implementation of this method is based on:
+  ///
+  /// [Regularized Gamma Function](http://mathworld.wolfram.com/RegularizedGammaFunction.html), equation (1)
+  ///
+  /// [Incomplete Gamma Function](http://mathworld.wolfram.com/IncompleteGammaFunction.html), equation (4)
+  ///
+  /// [Confluent Hypergeometric Function of the First Kind](http://mathworld.wolfram.com/ConfluentHypergeometricFunctionoftheFirstKind.html), equation (1)
+  ///
+  /// - Parameters:
+  ///   - a: parameter
+  ///   - x: value
+  ///   - epsilon: when the absolute value of the nth item in the series is less than epsilon the approximation ceases to calculate further elements in the series.
+  ///   - maxIterations: maximum number of "iterations" to complete
+  ///
+  /// - Returns: the regularized gamma function P(a, x)
+  ///
+  /// - Throw: PrapiroonError.maxCountExceeded
   internal static func regularizedGammaP(a: Double, x: Double, epsilon: Double, maxIterations: Int) throws -> Double {
     var result: Double
     
@@ -223,7 +260,7 @@ internal struct Gamma {
     }
     else if x >= a + 1.0 {
       // use regularizedGammaP because it should converge faster in this case.
-      let regularizedGammaQ = try Gamma.regularizedGammaQ(a, x: x, epsilon: epsilon, maxIterations: maxIterations)
+      let regularizedGammaQ = try Gamma.regularizedGammaQ(a: a, x: x, epsilon: epsilon, maxIterations: maxIterations)
       
       result = 1.0 - regularizedGammaQ
     }
@@ -244,14 +281,13 @@ internal struct Gamma {
       }
       
       if n >= Double(maxIterations) {
-        // TODO: MaxCountExceededException(maxIterations);
-        fatalError()
+        throw PrapiroonError.maxCountExceeded(format: "maximal count (%@) exceeded", maximum: NSNumber(value: maxIterations), arguments: [])
       }
       else if sum.isInfinite {
         result = 1.0
       }
       else {
-        let logGamma = try Gamma.logGamma(a)
+        let logGamma = try Gamma.logGamma(x: a)
         
         result = exp(-x + (a * log(x)) - logGamma) * sum
       }
@@ -260,10 +296,36 @@ internal struct Gamma {
     return result
   }
   
+  /// Returns the regularized gamma function Q(a, x) = 1 - P(a, x).
+  ///
+  /// - Parameters:
+  ///   - a: parameter
+  ///   - x: value
+  ///
+  /// - Returns: the regularized gamma function Q(a, x)
+  ///
+  /// - Throw: PrapiroonError.maxCountExceeded
   internal static func regularizedGammaQ(a: Double, x: Double) throws -> Double {
-    return try Gamma.regularizedGammaQ(a, x: x, epsilon: Gamma.defaultEpsilon, maxIterations: Int.max)
+    return try Gamma.regularizedGammaQ(a: a, x: x, epsilon: Gamma.defaultEpsilon, maxIterations: Int.max)
   }
   
+  /// Returns the regularized gamma function Q(a, x) = 1 - P(a, x).
+  ///
+  /// - Note: The implementation of this method is based on:
+  ///
+  /// [Regularized Gamma Function](http://mathworld.wolfram.com/RegularizedGammaFunction.html), equation (1)
+  ///
+  /// [Regularized incomplete gamma function: Continued fraction representations (formula 06.08.10.0003)](http://functions.wolfram.com/GammaBetaErf/GammaRegularized/10/0003/)
+  ///
+  /// - Parameters:
+  ///   - a: parameter
+  ///   - x: value
+  ///   - epsilon: when the absolute value of the nth item in the series is less than epsilon the approximation ceases to calculate further elements in the series.
+  ///   - maxIterations: maximum number of "iterations" to complete
+  ///
+  /// - Returns: the regularized gamma function Q(a, x)
+  ///
+  /// - Throw: PrapiroonError.maxCountExceeded
   internal static func regularizedGammaQ(a: Double, x: Double, epsilon: Double, maxIterations: Int) throws -> Double {
     var result: Double
     
@@ -275,14 +337,14 @@ internal struct Gamma {
     }
     else if x < a + 1.0 {
       // use regularizedGammaP because it should converge faster in this case.
-      let regularizedGammaP = try Gamma.regularizedGammaP(a, x: x, epsilon: epsilon, maxIterations: maxIterations)
+      let regularizedGammaP = try Gamma.regularizedGammaP(a: a, x: x, epsilon: epsilon, maxIterations: maxIterations)
       
       result = 1.0 - regularizedGammaP
     }
     else {
       // create continued fraction
       func getA(_ n: Int, _ x: Double) -> Double {
-        return ((2.0 * Double(n)) + 1.0) - a + x
+        return (2.0 * Double(n) + 1.0) - a + x
       }
       
       func getB(_ n: Int, _ x: Double) -> Double {
@@ -292,15 +354,33 @@ internal struct Gamma {
       let continuedFraction = ContinuedFraction(getA: getA, getB: getB)
       
       let evaluate = try continuedFraction.evaluate(x: x, epsilon: epsilon, maxIterations: maxIterations)
-      let logGamma = try Gamma.logGamma(a)
+      let logGamma = try Gamma.logGamma(x: a)
       
       result = 1.0 / evaluate
+      
       result *= exp(-x + (a * log(x)) - logGamma)
     }
     
     return result
   }
   
+  /// Computes the digamma function of x.
+  ///
+  /// - Note: This is an independently written implementation of the algorithm described in Jose Bernardo, Algorithm AS 103: Psi (Digamma) Function, Applied Statistics, 1976.
+  ///
+  /// Some of the constants have been changed to increase accuracy at the moderate expense of run-time.
+  /// The result should be accurate to within 10^-8 absolute tolerance for x >= 10^-5 and within 10^-8 relative tolerance for x > 0.
+  ///
+  /// Performance for large negative values of x will be quite expensive (proportional to |x|).
+  /// Accuracy for negative values of x should be about 10^-8 absolute for results less than 10^5 and 10^-8 relative for results larger than that.
+  ///
+  /// - Note: [Digamma](http://en.wikipedia.org/wiki/Digamma_function)
+  ///
+  /// [Bernardo&apos;s original article](http://www.uv.es/~bernardo/1976AppStatist.pdf)
+  ///
+  /// - Parameter x: argument
+  ///
+  /// - Returns: digamma(x: x) to within 10-8 relative or absolute error whichever is smaller.
   internal static func digamma(x: Double) -> Double {
     guard !x.isNaN && !x.isInfinite else {
       return x
@@ -323,9 +403,18 @@ internal struct Gamma {
       return log(x) - 0.5 / x - inv * ((1.0 / 12.0) + inv * (1.0 / 120.0 - inv / 252.0))
     }
     
-    return Gamma.digamma(x + 1.0) - 1.0 / x
+    return Gamma.digamma(x: x + 1.0) - 1.0 / x
   }
   
+  /// Computes the trigamma function of x.
+  ///
+  /// - Note: This function is derived by taking the derivative of the implementation of digamma.
+  ///
+  /// [Trigamma](http://en.wikipedia.org/wiki/Trigamma_function)
+  ///
+  /// - Parameter x: argument
+  ///
+  /// - Returns: trigamma(x: x) to within 10-8 relative or absolute error whichever is smaller
   internal static func trigamma(x: Double) -> Double {
     guard !x.isNaN && !x.isInfinite else {
       return x
@@ -346,19 +435,38 @@ internal struct Gamma {
       return 1.0 / x + inv / 2.0 + inv / x * (1.0 / 6.0 - inv * (1.0 / 30.0 + inv / 42.0))
     }
     
-    return Gamma.trigamma(x + 1.0) + 1.0 / (x * x)
+    return Gamma.trigamma(x: x + 1.0) + 1.0 / (x * x)
   }
   
+  /// Returns the Lanczos approximation used to compute the gamma function.
+  ///
+  /// - Note: The Lanczos approximation is related to the Gamma function by the following equation
+  ///
+  /// gamma(x) = sqrt(2 * pi) / x * (x + g + 0.5) ^ (x + 0.5) * exp(-x - g - 0.5) * lanczos(x) where g is the Lanczos constant.
+  ///
+  /// [Lanczos Approximation](http://mathworld.wolfram.com/LanczosApproximation.html) equations (1) through (5), and Paul Godfrey's [Note on the computation of the convergent Lanczos complex Gamma approximation](http://my.fit.edu/~gabdo/gamma.txt)
+  /// - Parameter x: argument
+  ///
+  /// - Returns: the Lanczos approximation.
   internal static func lanczos(x: Double) -> Double {
     var sum: Double = 0.0
     
-    (1 ..< Gamma.lanczos.count).reversed().forEach { (index) in
-      sum += Gamma.lanczos[index] / (x + Double(index))
+    (1 ..< Gamma.lanczos.count).reversed().forEach { (i) in
+      sum += Gamma.lanczos[i] / (x + Double(i))
     }
     
     return sum + Gamma.lanczos[0]
   }
   
+  /// Returns the value of 1 / &Gamma;(1 + x) - 1 for -0&#46;5 &le; x &le; 1&#46;5.
+  ///
+  /// - Note: This implementation is based on the double precision implementation in the NSWC Library of Mathematics Subroutines, DGAM1.
+  ///
+  /// - Parameter x: argument
+  ///
+  /// - Returns: the value of 1.0 / Gamma(1.0 + x) - 1.0.
+  ///
+  /// - Throws: PrapiroonError.numberIsTooSmall if x < -0.5, PrapiroonError.numberIsTooLarge if x > 1.5
   internal static func invGamma1pm1(x: Double) throws -> Double {
     guard x >= -0.5 else {
       throw PrapiroonError.numberIsTooSmall(wrong: NSNumber(value: x), minimum: NSNumber(value: -0.5), isBoundAllowed: true)
@@ -447,6 +555,15 @@ internal struct Gamma {
     return result
   }
   
+  /// Returns the value of log &Gamma;(1 + x) for -0&#46;5 &le; x &le; 1&#46;5.
+  ///
+  /// - Note: This implementation is based on the double precision implementation in the NSWC Library of Mathematics Subroutines, DGMLN1.
+  ///
+  /// - Parameter x: argument
+  ///
+  /// - Returns: the value of log(Gamma(1 + x)).
+  ///
+  /// - Throws: PrapiroonError.numberIsTooSmall if x < -0.5, PrapiroonError.numberIsTooLarge if x > 1.5
   internal static func logGamma1p(x: Double) throws -> Double {
     guard x >= -0.5 else {
       throw PrapiroonError.numberIsTooSmall(wrong: NSNumber(value: x), minimum: NSNumber(value: -0.5), isBoundAllowed: true)
@@ -456,9 +573,16 @@ internal struct Gamma {
       throw PrapiroonError.numberIsTooLarge(wrong: NSNumber(value: x), maximum: NSNumber(value: 1.5), isBoundAllowed: true)
     }
     
-    return -log1p(try Gamma.invGamma1pm1(x))
+    return -log1p(try Gamma.invGamma1pm1(x: x))
   }
   
+  /// Returns the value of &Gamma;(x)
+  ///
+  /// - Note: Based on the NSWC Library of Mathematics Subroutines double precision implementation, DGAMMA.
+  ///
+  /// - Parameter x: argument
+  ///
+  /// - Returns: the value of Gamma(x).
   internal static func gamma(x: Double) throws -> Double {
     guard x != rint(x) || x > 0.0 else {
       return Double.nan
@@ -484,7 +608,7 @@ internal struct Gamma {
           prod *= t
         }
         
-        let invGamma1pm1 = try Gamma.invGamma1pm1(t - 1.0)
+        let invGamma1pm1 = try Gamma.invGamma1pm1(x: t - 1.0)
         
         result = prod / (1.0 + invGamma1pm1)
       }
@@ -503,16 +627,29 @@ internal struct Gamma {
           prod *= t
         }
         
-        let invGamma1pm1 = try Gamma.invGamma1pm1(t)
+        let invGamma1pm1 = try Gamma.invGamma1pm1(x: t)
         
         result = 1.0 / (prod * (1.0 + invGamma1pm1))
       }
     }
     else {
       let y: Double = absX + Gamma.lanczosG + 0.5
-      let gammaAbs = Gamma.sqrt2Pi / absX * pow(y, absX + 0.5) * exp(-y) * Gamma.lanczos(absX)
+      let gammaAbs = Gamma.sqrt2Pi / absX * pow(y, absX + 0.5) * exp(-y) * Gamma.lanczos(x: absX)
       
-      result = x > 0.0 ? gammaAbs : -(Double.pi) / (x * sin(.pi * x) * gammaAbs)
+      if x > 0.0 {
+        result = gammaAbs
+      }
+      else {
+        /*
+         * From the reflection formula
+         * Gamma(x) * Gamma(1 - x) * sin(pi * x) = pi,
+         * and the recurrence relation
+         * Gamma(1 - x) = -x * Gamma(-x),
+         * it is found
+         * Gamma(x) = -pi / [x * sin(pi * x) * Gamma(-x)].
+         */
+        result = -(Double.pi) / (x * sin(.pi * x) * gammaAbs)
+      }
     }
     
     return result

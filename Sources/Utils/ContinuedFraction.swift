@@ -17,6 +17,9 @@ import Foundation
 internal struct ContinuedFraction {
   
   /// Access the n-th a coefficient of the continued fraction.
+  typealias CoefficientOfContinuedFraction = (Int, Double) -> Double
+  
+  /// Access the n-th a coefficient of the continued fraction.
   /// Since a can be a function of the evaluation point, x, that is passed in as well.
   ///
   /// - Parameters:
@@ -24,7 +27,7 @@ internal struct ContinuedFraction {
   ///   - x: the evaluation point.
   ///
   /// - Returns: the n-th a coefficient.
-  internal var getA: (Int, Double) -> Double
+  internal var getA: CoefficientOfContinuedFraction
   
   /// Access the n-th b coefficient of the continued fraction.
   /// Since a can be a function of the evaluation point, x, that is passed in as well.
@@ -34,7 +37,7 @@ internal struct ContinuedFraction {
   ///   - x: the evaluation point.
   ///
   /// - Returns: the n-th b coefficient.
-  internal var getB: (Int, Double) -> Double
+  internal var getB: CoefficientOfContinuedFraction
   
   /// Maximum allowed numerical error
   private static let defaultEpsilon: Double = 10e-9

@@ -87,48 +87,15 @@ public class NormalDistribution: AbstractRealDistribution {
     self._solverAbsoluteAccuracy = inverseCumulativeAccuracy
   }
   
-  public override func probability(_ x0: Double, x1: Double) throws -> Double {
-    guard x0 <= x1 else {
-      fatalError()
-    }
-    
-    let denom = self.standardDeviation * NormalDistribution.SQRT2
-    
-    let v0 = (x0 - self.mean) / denom
-    let v1 = (x1 - self.mean) / denom
-    
-    let erf = try Erf.erf(v0, x2: v1)
-    
-    return 0.5 * erf
-  }
-  
-  public override func inverseCumulativeProbability(_ p: Double) throws -> Double {
-    guard p >= 0.0 && p <= 1.0 else {
-      throw PrapiroonError.outOfRange(wrong: NSNumber(value: p), lowerBound: NSNumber(value: 0.0), higherBound: NSNumber(value: 1.0))
-    }
-    
-    let erfInv = try Erf.erfInv(2 * p - 1)
-    
-    return self.mean + self.standardDeviation * NormalDistribution.SQRT2 * erfInv
-  }
-  
-  public override func logDensity(_ x: Double) -> Double {
+  public override func logDensity(x: Double) -> Double {
     let x0 = x - self.mean
     let x1 = x0 / self.standardDeviation
     
     return -0.5 * x1 * x1 - self._logStandardDeviationPlusHalfLog2Pi
   }
   
-  public func density(_ x: Double) -> Double {
-    return exp(self.logDensity(x))
-  }
-  
-  public func cumulativeProbability(_ x: Double) throws -> Double {
-    let dev = x - self.mean
-    
-    let erfc = try Erf.erfc(-dev / (self.standardDeviation * NormalDistribution.SQRT2))
-    
-    return abs(dev) > 40.0 * self.standardDeviation ? dev < 0.0 ? 0.0 : 1.0 : 0.5 * erfc
+  public func density(x: Double) -> Double {
+    return exp(self.logDensity(x: x))
   }
 }
 

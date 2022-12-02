@@ -40,23 +40,26 @@ internal protocol RealDistribution {
   /// In other words, this method represents the probability mass function (PMF) for the distribution.
   ///
   /// - Parameter x: the point at which the PMF is evaluated
+  ///
   /// - Returns: the value of the probability mass function at point x
-  func probability(_ x: Double) -> Double
+  func probability(x: Double) -> Double
   
   /// Returns the probability density function (PDF) of this distribution evaluated at the specified point x.
   /// In general, the PDF is the derivative of the cumulativeProbability(double) CDF.
   /// If the derivative does not exist at x, then an appropriate replacement should be returned, e.g. Double.infinity, Double.nan, or  the limit inferior or limit superior of the difference quotient.
   ///
   /// - Parameter x: the point at which the PDF is evaluated
+  ///
   /// - Returns: the value of the probability density function at point x
-  func density(_ x: Double) -> Double
+  func density(x: Double) -> Double
   
   /// For a random variable {@code X} whose values are distributed according to this distribution, this method returns P(X <= x).
   /// In other words, this method represents the cumulative distribution function (CDF) for this distribution.
   ///
   /// - Parameter x: the point at which the CDF is evaluated
+  ///
   /// - Returns: the probability that a random variable with this distribution takes a value less than or equal to x
-  func cumulativeProbability(_ x: Double) -> Double
+  func cumulativeProbability(x: Double) -> Double
   
   /// Computes the quantile function of this distribution.
   /// For a random variable X distributed according to this distribution, the returned value is
@@ -64,9 +67,11 @@ internal protocol RealDistribution {
   /// inf{x in R | P(X<=x) > 0} for p = 0.
   ///
   /// - Parameter p: the cumulative probability
+  ///
   /// - Returns: the smallest p-quantile of this distribution (largest 0-quantile for p = 0)
+  ///
   /// - Throws: PrapiroonError.outOfRange
-  func inverseCumulativeProbability(_ p: Double) throws -> Double
+  func inverseCumulativeProbability(p: Double) throws -> Double
 }
 
 extension RealDistribution {
@@ -87,19 +92,19 @@ extension RealDistribution {
     fatalError("Not implemented yet.")
   }
   
-  func probability(_ x: Double) -> Double {
+  func probability(x: Double) -> Double {
     fatalError("Not implemented yet.")
   }
   
-  func density(_ x: Double) -> Double {
+  func density(x: Double) -> Double {
     fatalError("Not implemented yet.")
   }
   
-  func cumulativeProbability(_ x: Double) -> Double {
+  func cumulativeProbability(x: Double) -> Double {
     fatalError("Not implemented yet.")
   }
   
-  func inverseCumulativeProbability(_ p: Double) throws -> Double {
+  func inverseCumulativeProbability(p: Double) throws -> Double {
     fatalError("Not implemented yet.")
   }
 }
