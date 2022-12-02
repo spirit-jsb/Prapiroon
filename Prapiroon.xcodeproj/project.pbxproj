@@ -16,6 +16,7 @@
 		503BE62C291CEE2D00E4134F /* ContinuedFraction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE620291CEE2D00E4134F /* ContinuedFraction.swift */; };
 		503BE62D291CEE2D00E4134F /* Precision.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE621291CEE2D00E4134F /* Precision.swift */; };
 		503BE62F291CEE2D00E4134F /* UnivariateSolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503BE625291CEE2D00E4134F /* UnivariateSolver.swift */; };
+		504E3F622939DB0700392893 /* ContinuedFractionTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 504E3F612939DB0700392893 /* ContinuedFractionTests.swift */; };
 		50671A2029129EAD0021F3DD /* Prapiroon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 50671A1729129EAD0021F3DD /* Prapiroon.framework */; };
 		50671A3029129F7F0021F3DD /* PrapiroonTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50671A2F29129F7F0021F3DD /* PrapiroonTests.swift */; };
 /* End PBXBuildFile section */
@@ -40,6 +41,7 @@
 		503BE620291CEE2D00E4134F /* ContinuedFraction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContinuedFraction.swift; sourceTree = "<group>"; };
 		503BE621291CEE2D00E4134F /* Precision.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Precision.swift; sourceTree = "<group>"; };
 		503BE625291CEE2D00E4134F /* UnivariateSolver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnivariateSolver.swift; sourceTree = "<group>"; };
+		504E3F612939DB0700392893 /* ContinuedFractionTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContinuedFractionTests.swift; sourceTree = "<group>"; };
 		50671A1729129EAD0021F3DD /* Prapiroon.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Prapiroon.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		50671A1F29129EAD0021F3DD /* PrapiroonTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PrapiroonTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		50671A2F29129F7F0021F3DD /* PrapiroonTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = PrapiroonTests.swift; path = Tests/PrapiroonTests.swift; sourceTree = "<group>"; };
@@ -108,6 +110,15 @@
 			path = Solvers;
 			sourceTree = "<group>";
 		};
+		504E3F602939DAF400392893 /* Utils */ = {
+			isa = PBXGroup;
+			children = (
+				504E3F612939DB0700392893 /* ContinuedFractionTests.swift */,
+			);
+			name = Utils;
+			path = Tests/Utils;
+			sourceTree = "<group>";
+		};
 		50671A0D29129EAD0021F3DD = {
 			isa = PBXGroup;
 			children = (
@@ -141,6 +152,7 @@
 		50671A2329129EAD0021F3DD /* Tests */ = {
 			isa = PBXGroup;
 			children = (
+				504E3F602939DAF400392893 /* Utils */,
 				50671A2F29129F7F0021F3DD /* PrapiroonTests.swift */,
 			);
 			name = Tests;
@@ -273,6 +285,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				50671A3029129F7F0021F3DD /* PrapiroonTests.swift in Sources */,
+				504E3F622939DB0700392893 /* ContinuedFractionTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
